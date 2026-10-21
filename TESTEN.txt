@@ -1,0 +1,221 @@
+HVH / Player ESP, Aim, Skins, Live Diagnostics and Crosshair / x64 / DX11
+
+Aktuelle Version im Projekt:
+  dist\esp-details\
+Im ZIP-Paket liegen diese Dateien direkt im Ordner dist\.
+
+Neue Profile starten mit ausgeschaltetem Aimbot und Skin-Changer. Die bisherigen
+Menue-, Fadenkreuz- und Diagnoseeinstellungen bleiben profilkompatibel.
+
+Bedienung:
+  INSERT       Menue oeffnen/schliessen
+  Loader mit --unload: DLL vollstaendig entladen
+
+AIM (vollstaendig englisches Menue):
+  General -> Aimbot einschalten. Standard: Hold mit Mouse 4.
+  Enemy Rules: automatisch nach mp_teammates_are_enemies. Im Free-for-All
+  sind CT und T Gegner; im Teammodus bleibt das eigene Team ausgeschlossen.
+  Die Regel gilt auch fuer Auto Fire und den Gegnerfilter im ESP. Keine
+  zusaetzliche Profileinstellung erforderlich; die Serverregel wird nur gelesen.
+  INSERT schliesst das Menue; Mouse 4 halten aktiviert die Zielsuche.
+  Hold / Toggle / Always und Activation Key sind frei einstellbar.
+  Targeting: echter Winkel-FOV, Smoothing, Prioritaet nach FOV/Distanz/Leben,
+  Head / Chest / Stomach / Arms / Legs und Target Switch Delay.
+  Multipoint verwendet echte Modell-Hitboxen und deren Knochentransformationen.
+  Firing: Recoil Compensation, Auto Fire, Auto Scope, Auto Stop, Autowall,
+  Minimum Damage, Sampled Hit Chance und Wall Penetration.
+  Conditions: Visible Targets Only, native volumetrische Rauchpruefung,
+  Pause While Flashed und Skip Airborne Targets.
+  Autowall (Firing) erlaubt native direkte und durchdringende Schuesse.
+  Der Sichtfilter wird dabei automatisch uebersteuert, sein gespeicherter Wert
+  bleibt fuer ausgeschaltetes Autowall erhalten. Minimum Damage und Sampled
+  Hit Chance bleiben aktiv. Expected Damage und Penetrations zeigen den Zielwert.
+  Silent Aim (Targeting) veraendert die ausgehende Schussrichtung, ohne die
+  Kamera zum Ziel zu drehen. Silent History Samples zaehlt echte native
+  History-Ersetzungen. Smoothing gilt fuer normales Aim und wird dort erhalten.
+  Beide Optionen werden pro Waffenprofil gespeichert und global vererbt.
+  Overlay: FOV Ring, Target Marker und Target Information.
+  Profiles: Global und acht Waffenklassen mit Override Global/Vererbung.
+  CONFIG -> Save Profile speichert alle Einstellungen atomar.
+  Auto Fire bleibt standardmaessig aus. Eigene native Eingabebeitraege werden
+  beim Loslassen, Menueoeffnen, Fokuswechsel, Tod und Entladen freigegeben.
+  Sampled Hit Chance verteilt native Streustrahlen auf kurze Arbeitspakete.
+  Jede Schaetzung verwendet 8 bis 16 Strahlen desselben Updates. Unter 8
+  aktuellen Strahlen wird kein automatischer Schuss freigegeben. Bei exakt
+  null Streuung reicht ein nativer Strahl. Das Zeitbudget ist 0,75 ms;
+  Stichproben aus vorherigen Updates autorisieren keine neuen Schuesse.
+  Ein Zeitbudget begrenzt die Zahl neu gestarteter nativer Pruefungen; ein
+  einzelner Engine-Aufruf kann nicht unterbrochen werden. Aktuelle Pose,
+  Identitaeten und Schussbedingungen werden weiterhin geprueft.
+  Es werden keine exakten Server-Seeds vorhergesagt.
+  Die besonderen Mehrpellet-Muster von Schrotflinten sind noch nicht enthalten;
+  deren Auto Fire braucht Hit Chance=0. Zielwahl und Multipoints funktionieren.
+  General zeigt Input Callbacks, Candidates, Aim CPU Time, Peak Aim CPU Time
+  und Chance Rays This Update / Chance Sample Size. Target Switch Delay kann Schuesse absichtlich
+  verzoegern; der Profilstandard ist 100 ms.
+  Firing zeigt Fire Gate, Alignment Error, Current Sample N und Chance Estimate.
+  Fire Gate unterscheidet unter anderem Ausrichtung, Nachladen, leeres Magazin,
+  unvollstaendige Stichprobe und eine zu niedrige geschaetzte Trefferchance.
+  Firing bestaetigt eine angeforderte Angriffseingabe, keinen bestaetigten Treffer.
+  Waiting for weapon cooldown bezeichnet die native Primaerangriffs-Sperre.
+  Auto Fire wartet auf deren Freigabe, ohne diese Spielzeitwerte zu veraendern.
+  Waffenwechsel setzen eigene Impuls-Timer zurueck und geben alte Eingaben frei.
+  Einzelschuss-Impulse werden bei weiterhin gueltigem Ziel bis zu 20 ms gehalten.
+  Server Rules bietet No Spread und No Recoil fuer den lokalen Listen-Server
+  dieses Prozesses, auch mit sv_cheats 0. Die Regeln betreffen alle Spieler dort.
+  Gepaarte Client-/Serverfilter entfernen Streuung bzw. neue Waffen-Rueckstoesse;
+  bereits vorhandener Rueckstoss klingt normal ab. Beide Schalter sind
+  standardmaessig aus und werden unabhaengig vom Aimbot im Profil gespeichert.
+  Ein anderer Build blockiert native Methoden bis zu einer erneuten Pruefung.
+
+SKINS:
+  Weapons: Waffe und Finish ueber die Suchlisten auswaehlen.
+  Knives / Gloves: Team T oder CT und gewuenschtes Modell waehlen.
+  Apply This Item aktiviert die Konfiguration fuer das ausgewaehlte Item.
+  Skin Changer aktiviert die Anwendung fuer die eigene lokale Ausruestung.
+  Wear, Pattern Seed und optional StatTrak lassen sich pro Item einstellen.
+  Apply / Save aktiviert das ausgewaehlte Item sowie den Skin-Changer,
+  fordert die Aktualisierung an und speichert das Profil. Andere Items werden
+  dadurch nicht zusaetzlich eingeschaltet. In Application speichert derselbe
+  Knopf die bereits aktivierten Items, ohne ausgeschaltete Optionen einzuschalten.
+  Held Weapon zeigt die aktuell gehaltene Waffe. Die Auswahl uebernimmt sie
+  einmalig; eine danach manuell gewaehlte Waffe bleibt ausgewaehlt.
+  Selected Weapon meldet auch, wenn die gewaehlte Waffe nicht im Loadout liegt.
+  Application zeigt den Buildstatus, Spielcallbacks und angewendete Itemwerte.
+  Local values applied bestaetigt die Werte und den Aktualisierungsauftrag;
+  die sichtbare Darstellung muss im Spiel geprueft werden.
+  Ein Waffenmodell erscheint erst, wenn die entsprechende Waffe vorhanden ist.
+  Messer/Handschuhe verwenden getrennte Modelloptionen fuer T und CT.
+  Beim Abschalten oder Entladen werden die erfassten Originalwerte zurueckgegeben.
+  Der Katalog stammt aus der installierten Version: 43 Waffendefinitionen,
+  23 Messermodelle einschliesslich Standards, 10 Handschuhtypen,
+  1.479 Lackierungen, Standardausfuehrungen und belegte kompatible Kombinationen.
+  Market-/Steam-Inventare und Eigentumsdaten werden nicht geaendert.
+
+VISUALS -> Player ESP:
+  Player ESP einschalten. Full Box / Corner Box / OFF, Player Names,
+  Health Bar, Health Value, Weapon Names, Distance und Snaplines.
+  Skeleton, Ammo Count, Ammo Bar und Status Flags sind separat schaltbar.
+  VISUALS -> ESP Status / Details bietet einzelne Filter fuer Armor Value,
+  Helmet / Defuse Kit, Scoped, Reloading, Flashed, Defusing und Spawn Protection.
+  Munition stammt aus dem aktuellen Magazin und Reservevorrat. Fehlende Daten
+  werden ausgelassen; ein leeres Magazin erscheint als 0. Die Ammo Bar braucht
+  eine gueltige Magazinkapazitaet. Fehlende Knochen werden nicht ueberbrueckt.
+  Zusatzabfragen fuer Skeleton verwenden ein Zeitbudget von 2 ms pro Erfassung;
+  einzelne native Aufrufe lassen sich dabei nicht unterbrechen.
+  VISUALS -> ESP Style / Filters bietet Enemies Only, Visible Only,
+  Only When Alive, Hide While Menu Is Open, maximale Entfernung,
+  Update-Intervall16-100ms und getrennte Farben fuer sichtbare/verdeckte
+  Gegner sowie Mitspieler. Linienstarke, Schriftgroesse und Fuellfarbe sind
+  anpassbar; eine Vorschau ist auch ohne laufende Spielrunde sichtbar.
+  Boxen verwenden aktuelle native Kopfpositionen und den Ursprung des Pawns.
+  Sichtbarkeit ist eine native geometrische Sichtpruefung, keine Rauchpruefung.
+  Die Erfassung laeuft auf dem geprueften Spieleingabe-Callback, auch mit Aim OFF.
+  Der Renderpfad aktualisiert nur die Kameramatrix und zeichnet die Stichprobe.
+  Veraltete Frames, fremde Builds, Weltwechsel und ungueltige Seriennummern
+  werden verworfen. ESP Sample CPU Time zeigt die Dauer der letzten Erfassung.
+  CONFIG -> Save Profile speichert saemtliche ESP-Einstellungen.
+  Neue Profile starten mit ESP OFF. Neue Detailoptionen bleiben bei aelteren
+  Profilen ohne entsprechende Schluessel ausgeschaltet; vorhandene Werte bleiben.
+
+Build-Abgleich21.10.2026:
+  Frische Dumps:build/dumps-2026-10-21, Build14191.
+  Das Profil ist an den am21.10.2026 untersuchten Client gebunden.
+  Benoetigte Schemafelder, native Funktionskoerper und VTables wurden erneut
+  abgeglichen; die beiden verschobenen HUD-Modell-VTables wurden angepasst.
+  Einzelheiten:analysis/esp-client-compatibility-recovery.json und
+  analysis/esp-cosmetic-compatibility.json. Andere Builds brauchen einen Neuabgleich.
+
+VISUALS -> Crosshair:
+  Aktivieren, Cross / Dot / Circle / T Shape, Laenge bzw. Radius,
+  Abstand, Linienstarke, RGBA-Farbe, Kontur, Konturbreite und Mittelpunkt.
+  Zahlenzeilen anklicken, um den Schieberegler zu oeffnen.
+  Form anklicken, um zur naechsten Form zu wechseln.
+  Die Vorschau ist auch ausserhalb einer laufenden Runde sichtbar.
+
+VISUALS -> Conditions:
+  Standardmaessig erscheint das Fadenkreuz nur in einer aktiven Runde,
+  bei lebender lokaler Spielfigur und mit geschlossenem Menue.
+  Diese Bedingungen lassen sich einzeln aendern.
+  Das Fadenkreuz zeichnet ueber das Bild, ohne das native Fadenkreuz zu veraendern.
+
+MISC -> Live Diagnostics:
+  Verbindung, Map, Spielername, Leben, Team, Lebenszustand,
+  aktive Waffe, Magazin, Spielbuild und Dump-Profilstatus.
+  Player / Weapon / Connection bieten die jeweiligen Detailansichten.
+  Sampling steuert Aktualisierungsintervall (100 bis 1000 ms) und Diagnose-HUD.
+  Fehlende Werte erscheinen als --. Im Hauptmenue werden keine alten
+  Spielerdaten aus einer Hintergrundwelt angezeigt.
+
+CONFIG:
+  Save Profile / Load Profile / Restore Defaults.
+  Alle Menue-, Fadenkreuz-, Diagnose- und Skinoptionen liegen in hvh-menu.ini
+  neben der geladenen DLL. Alte Profile nur mit [Menu] bleiben kompatibel.
+  Beim Speichern wird das Profil erst nach erfolgreichem Schreiben ersetzt.
+  Im Fehlerfall erscheint eine entsprechende Statusmeldung.
+
+Frisch starten:
+1. CS2 in Steam mit diesen Testoptionen starten:
+     -insecure -dx11
+   Falls Drittsoftware weiterhin geblockt wird, zusaetzlich:
+     -allow_third_party_software
+2. Hauptmenue oder eigene lokale Bot-Runde abwarten.
+3. Den Loader aus dem gleichen Ordner wie die neue DLL starten.
+4. INSERT oeffnet das Menue.
+
+Update bei bereits geladener aelterer DLL:
+1. Mit dem bisherigen Loader --unload ausfuehren.
+2. Den Loader neben der neuen DLL starten.
+   Der Loader meldet einen Pfadkonflikt, falls noch eine andere hvh_menu.dll
+   geladen ist. Er ueberschreibt sie nicht automatisch.
+
+Explizite Prozessauswahl:
+  hvh_loader.exe --pid 1234
+  hvh_loader.exe --pid 1234 --unload
+
+Loader und Spiel muessen mit passenden Benutzerrechten laufen.
+Bei Fehlern: hvh-menu.log neben der DLL lesen.
+Bei fehlgeschlagener Freigabe bleibt die DLL geladen.
+-insecure verhindert den Beitritt zu VAC-gesicherten Servern.
+Vor der Rueckkehr auf gesicherte Server DLL entladen, CS2 beenden,
+Teststartoptionen entfernen und CS2 neu starten.
+
+Datenprofil:
+  Dump-Quelle: lokaler DUMP_ORDNER (nicht im Repository enthalten)
+  Build: 14191
+  Generierte Offsets: src/generated/dump_offsets.hpp
+  Waffenbezeichnungen stammen aus den installierten Items-/Sprachdaten.
+  Runtime-Pruefung: Build, PE-Zeitstempel und Imagegroesse.
+  Entity-Identitaeten, Rueckverweise und Handle-Seriennummern werden geprueft.
+  Bei nicht passendem Profil wird keine lokale Spielerdatenkette verfolgt.
+  Die Diagnose liest ausschliesslich. Der Skin-Changer aendert die lokalen
+  kosmetischen Itemwerte auf dem Spielcallback und nutzt native Materialmethoden.
+  Diese Methoden sind zusaetzlich an den exakt untersuchten Client-Build gebunden.
+
+Neu bauen:
+  python tools\fetch_deps.py
+  python tools\build.py --output dist\build
+
+Dumps erneut importieren:
+  python tools\import_dumps.py --source DUMP_ORDNER --game SPIEL_GAME_ORDNER
+  python tools\import_weapon_names.py --vpk PFAD_ZU_PAK01_DIR_VPK
+  python tools\import_cosmetics.py --vpk PFAD_ZU_PAK01_DIR_VPK
+  python tools\import_cosmetic_geometry.py --vpk PFAD_ZU_PAK01_DIR_VPK
+  python tools\import_skin_native.py
+Danach neu bauen. Neue Dump-Builds erfordern auch die Pruefung der
+kleinen, separat dokumentierten Nicht-Schema-Layouts in verified_layout.hpp.
+import_skin_native.py lehnt andere Clientdateien ab. Ein neuer Build erfordert
+eine erneute Untersuchung der nativen Material-/Modellmethoden.
+
+Tests:
+  powershell -ExecutionPolicy Bypass -File tools\test.ps1 -Dist dist\build
+  python -m unittest discover -s tests -p "test_*.py" -v
+  Fuer CI ohne Desktop: tools\test.ps1 -Dist dist\build -UnitOnly
+  Im ZIP mit flachem dist-Ordner: den Parameter -Dist weglassen.
+  Die Tests laufen isoliert in build/test-runtime und veraendern kein Nutzerprofil.
+  feature_tests.exe prueft Speicher-Fixtures, Profile, Formen und Sichtbarkeit.
+  diagnostic_probe.exe PID [output.json] liest dieselben Spieldaten wie die DLL
+  ausschliesslich lesend aus einem explizit gewaehlten Prozess.
+
+Vulkan wird nicht unterstuetzt. Abhaengigkeiten und Lizenzen:
+  THIRD_PARTY.txt und dist/licenses/

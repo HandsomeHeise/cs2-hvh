@@ -1,0 +1,14 @@
+build/
+dist/
+.toolchain/
+.downloads/
+external/
+__pycache__/
+*.log
+*.ini
+/analysis/
+/backups/
+/*-tests.json
+/.github-local/
+/WEITERARBEIT.txt
+*.pyc

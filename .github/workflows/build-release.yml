@@ -1,0 +1,87 @@
+name: Build and release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  build:
+    name: Windows x64 build and fixtures
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Fetch verified dependencies
+        run: python tools/fetch_deps.py
+      - name: Build
+        run: python tools/build.py --output dist/build
+      - name: C++ fixtures
+        run: ./tools/test.ps1 -Dist dist/build -UnitOnly
+      - name: Python importer and release-package tests
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+      - name: Package runtime and licenses
+        env:
+          BUILD_SHA: ${{ github.sha }}
+          BUILD_REF_TYPE: ${{ github.ref_type }}
+          BUILD_REF_NAME: ${{ github.ref_name }}
+        run: |
+          $taskVersion = if ($env:BUILD_REF_TYPE -eq 'tag') { $env:BUILD_REF_NAME } else { 'build-' + $env:BUILD_SHA.Substring(0, 12) }
+          python tools/package_release.py --dist dist/build --output dist/release --version $taskVersion --commit $env:BUILD_SHA
+      - name: Upload release files
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cs2-hvh-windows-x64
+          path: dist/release/*
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload fixture reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: fixture-reports
+          path: build/test-results/*.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  release:
+    name: Publish version release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: cs2-hvh-windows-x64
+          path: release
+      - name: Publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" release/* --clobber
+          else
+            gh release create "$RELEASE_TAG" release/* --verify-tag --title "$RELEASE_TAG" --generate-notes
+          fi

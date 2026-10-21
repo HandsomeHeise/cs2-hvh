@@ -1,0 +1,37 @@
+Upstream dependencies (pinned by commit, source archives verified with SHA-256):
+
+Dear ImGui v1.92.9b (MIT)
+https://github.com/ocornut/imgui/tree/f1cc2ae15e53a861a874c3034aae6798fde194ab
+https://github.com/ocornut/imgui/blob/f1cc2ae15e53a861a874c3034aae6798fde194ab/examples/example_win32_directx11/main.cpp
+
+MinHook v1.3.4 (BSD-style; see bundled license)
+https://github.com/TsudaKageyu/minhook/tree/c3fcafdc10146beb5919319d0683e44e3c30d537
+
+Portable build toolchain: LLVM-MinGW 20261006
+https://github.com/mstorsjo/llvm-mingw/releases/tag/20261006
+Runtime license notices are included in dist/licenses. The complete toolchain
+notices remain in .toolchain/llvm-mingw/LICENSE.TXT and its share directories.
+
+API references:
+https://learn.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiswapchain-resizebuffers
+https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-best-practices
+https://wiki.libsdl.org/SDL3/SDL_SetWindowRelativeMouseMode
+https://wiki.libsdl.org/SDL3/SDL_SetWindowMouseGrab
+https://help.steampowered.com/en/faqs/view/09A0-4879-4353-EF95
+
+The Windows Arial font is loaded from the local Windows installation when
+available; the font is not redistributed. UI geometry is drawn with ImGui.
+The user's reference image is not bundled into or rendered by the DLL.
+
+Item names, models and cosmetic compatibility metadata are derived from the
+user's installed CS2 VPK files by tools/import_weapon_names.py and
+tools/import_cosmetics.py. Source hashes and extraction coverage are recorded
+in analysis/weapon-names-source.json and analysis/cosmetics-source.json.
+Full game assets, inventory icons and textures are not redistributed.
+
+Compiled model body choices are read from the installed resources by
+tools/import_cosmetic_geometry.py. Its bounded binary KV3 decoder follows
+the public ValveResourceFormat layout documentation/source at this commit:
+https://github.com/ValveResourceFormat/ValveResourceFormat/tree/0d72f09ac9f36cbc4eae04b8541defeba1802ff5
+The exact format references and model hashes are in
+analysis/cosmetic-legacy-assets.json. Model meshes and materials are not bundled.
